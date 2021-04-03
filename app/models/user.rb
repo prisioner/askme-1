@@ -22,16 +22,17 @@ class User < ApplicationRecord
   validates_presence_of :password, on: :create
   validates_confirmation_of :password
 
+  before_validation :username_downcase
   before_save :encrypt_password
 
   def encrypt_password
-    if self.password.present?
+    if password.present?
       # 'salt' creating
       self.password_salt = User.hash_to_string(OpenSSL::Random.random_bytes(16))
 
       # password hash creating
       self.password_hash = User.hash_to_string(
-        OpenSSL::PKCS5.pbkdf2_hmac(self.password, self.password_salt, ITERATIONS, DIGEST.length, DIGEST)
+        OpenSSL::PKCS5.pbkdf2_hmac(password, password_salt, ITERATIONS, DIGEST.length, DIGEST)
       )
     end
   end
@@ -51,5 +52,11 @@ class User < ApplicationRecord
                                                                   ))
       user
     end
+  end
+  0
+  private
+
+  def username_downcase
+    self.username = username.downcase
   end
 end

@@ -1,14 +1,14 @@
 require 'openssl'
 
 class User < ApplicationRecord
-  ITERATIONS = 20000
+  ITERATIONS = 20_000
   DIGEST = OpenSSL::Digest.new('SHA256')
   # regexp for username validation
   VALID_USERNAME_REGEXP = /\A\w+\z/
 
   attr_accessor :password
 
-  has_many :questions
+  has_many :questions, dependent: :destroy
 
   validates :email, :username, presence: true
   validates :email, :username, uniqueness: true
@@ -25,10 +25,10 @@ class User < ApplicationRecord
   before_save :encrypt_password
 
   def self.authenticate(email, password)
-    user = find_by(email: email) # find person via email
+    user = find_by(email: email.downcase) # finding person via email
 
     # we compare the password hashes, not the real passwords! we do not keep password in DB
-    if user.present? && user.password_hash == User.hash_to_string(OpenSSL::PKCS5.pbkdf2_hmac(
+    if user&.password_hash == User.hash_to_string(OpenSSL::PKCS5.pbkdf2_hmac(
       password, user.password_salt, ITERATIONS,
       DIGEST.length, DIGEST
     ))

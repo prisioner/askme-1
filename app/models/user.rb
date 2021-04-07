@@ -25,45 +25,39 @@ class User < ApplicationRecord
   before_save :encrypt_password
 
   def self.authenticate(email, password)
-    user = find_by(email: email.downcase) # finding person via email
+    user = find_by(email: email&.downcase) # finding person via email
 
     # we compare the password hashes, not the real passwords! we do not keep password in DB
-    if user&.password_hash == User.hash_to_string(OpenSSL::PKCS5.pbkdf2_hmac(
-      password, user.password_salt, ITERATIONS,
-      DIGEST.length, DIGEST
-    ))
-      user
-    end
+    return nil unless user.password_hash == User.hash_to_string(OpenSSL::PKCS5.pbkdf2_hmac(
+                                                                  password, user.password_salt, ITERATIONS,
+                                                                  DIGEST.length, DIGEST
+                                                                ))
   end
 
   # binary string to HEX
   def self.hash_to_string(password_hash)
-    password_hash.unpack('H*')[0]
+    password_hash.unpack1('H*')
   end
 
   def encrypt_password
-    if password.present?
-      # 'salt' creating
-      self.password_salt = User.hash_to_string(OpenSSL::Random.random_bytes(16))
+    return unless password.present?
 
-      # password hash creating
-      self.password_hash = User.hash_to_string(
-        OpenSSL::PKCS5.pbkdf2_hmac(password, password_salt, ITERATIONS, DIGEST.length, DIGEST)
-      )
-    end
+    # 'salt' creating
+    self.password_salt = User.hash_to_string(OpenSSL::Random.random_bytes(16))
+
+    # password hash creating
+    self.password_hash = User.hash_to_string(
+      OpenSSL::PKCS5.pbkdf2_hmac(password, password_salt, ITERATIONS, DIGEST.length, DIGEST)
+    )
   end
 
   private
 
   def username_downcase
-    if username.present?
-      self.username = username.downcase
-    end
+    self.username = username&.downcase
   end
 
   def email_downcase
-    if email.present?
-      self.email = email.downcase
-    end
+    self.email = email&.downcase
   end
 end

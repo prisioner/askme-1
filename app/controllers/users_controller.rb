@@ -1,3 +1,5 @@
+require_relative '../modules/inclination'
+
 class UsersController < ApplicationController
   def index
     @users = [

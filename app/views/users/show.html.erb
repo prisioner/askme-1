@@ -11,6 +11,10 @@
     @<%= @user.username %>
   </h2>
 
+  <h3 class="title-small buffer-both">
+    Пользователю задали <%= @questions.count %> <%= Inclination.incline(@questions.count, 'вопрос', 'вопроса', 'вопросов') %> 
+  </h3>
+
   <div class="user-ask-button container text-center" id='ask-button'>
     <%= link_to "Спроси меня", '', class: 'button button-light', id: 'ask-button' %>
   </div>

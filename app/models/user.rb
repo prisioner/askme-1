@@ -28,10 +28,12 @@ class User < ApplicationRecord
     user = find_by(email: email&.downcase) # finding person via email
 
     # we compare the password hashes, not the real passwords! we do not keep password in DB
-    return nil unless user.password_hash == User.hash_to_string(OpenSSL::PKCS5.pbkdf2_hmac(
-                                                                  password, user.password_salt, ITERATIONS,
-                                                                  DIGEST.length, DIGEST
-                                                                ))
+    if user&.password_hash == User.hash_to_string(OpenSSL::PKCS5.pbkdf2_hmac(
+                                                  password, user.password_salt, ITERATIONS,
+                                                  DIGEST.length, DIGEST
+                                                ))
+      user
+    end
   end
 
   # binary string to HEX

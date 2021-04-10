@@ -29,7 +29,7 @@ class UsersController < ApplicationController
     if @user.save
       redirect_to root_url, notice: 'Пользователь зарегистрирован'
     else
-      render :edit
+      render :new
     end
   end
 
@@ -47,7 +47,6 @@ class UsersController < ApplicationController
     @questions_count = @questions.count
     @answers_count = @questions.where.not(answer: nil).count
     @unanswered_count = @questions_count - @answers_count
-
   end
 
   private

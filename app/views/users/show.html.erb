@@ -15,23 +15,26 @@
     @<%= @user.username %>
   </h2>
 
-  <h3 class="title-small buffer-both">
-    Пользователю задали <%= @questions.count %>
-    <%= Inclination.incline(@questions.count, 'вопрос', 'вопроса', 'вопросов') %>
-  </h3>
+</div>
 
-  <% if @user == current_user %>
-    <h4 class="title-small buffer-both">
-      <% answered_questions_count = @questions.reject { |question| question.answer.nil? }.count %>
-      Отвечено: <%= answered_questions_count %>
-      <%= Inclination.incline(answered_questions_count, 'вопрос', 'вопроса', 'вопросов') %>,
-      не отвечено: <%= alone_questions_count = @questions.count - answered_questions_count %>
-      <%= Inclination.incline(alone_questions_count, 'вопрос', 'вопроса', 'вопросов') %>
-    </h4>
-  <% end %>
-
+<div class="user-details">
   <div class="user-ask-button container text-center" id='ask-button'>
     <%= link_to "Спроси меня", '', class: 'button button-light', id: 'ask-button' %>
+  </div>
+
+  <div class="user-statistics container text-center">
+    <div class="column-1-3">
+      <h1 class="title-small"><%= @questions_count %></h1>
+      <p><%= incline(@questions_count, 'вопрос', 'вопроса', 'вопросов') %></p>
+    </div>
+    <div class="column-1-3">
+      <h1 class="title-small"><%= @answers_count %></h1>
+      <p><%= incline(@answers_count, 'ответ', 'ответа', 'ответов') %></p>
+    </div>
+    <div class="column-1-3">
+      <h1 class="title-small"><%= @unanswered_count %></h1>
+      <p><%= incline(@unanswered_count, 'вопрос', 'вопроса', 'вопросов') %> пока без ответа</p>
+    </div>
   </div>
 </div>
 
@@ -39,16 +42,16 @@
   <div class="user-question-form buffer-both">
     <div class="form">
       <%= form_for @new_question do |f| %>
-      <%= f.hidden_field :user_id %>
+        <%= f.hidden_field :user_id %>
 
-      <div class="form-field">
-        <%= f.label "Ваш вопрос для @#{@user.username}", class: 'form-label' %>
-        <%= f.text_area :text, class: 'form-textarea' %>
-      </div>
+        <div class="form-field">
+          <%= f.label "Ваш вопрос для @#{@user.username}", class: 'form-label' %>
+          <%= f.text_area :text, class: 'form-textarea' %>
+        </div>
 
-      <div class="form-action">
-        <%= submit_tag 'Задать вопрос', class: 'button button-green' %>
-      </div>
+        <div class="form-action">
+          <%= submit_tag 'Задать вопрос', class: 'button button-green' %>
+        </div>
       <% end %>
     </div>
   </div>
@@ -59,7 +62,7 @@
   <div class="user-question buffer-both">
     <div class="question-list">
       <% @questions.each do |question| %>
-      <%= render partial: 'questions/question', object: question %>
+        <%= render partial: 'questions/question', object: question %>
       <% end %>
     </div>
   </div>

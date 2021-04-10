@@ -1,10 +1,12 @@
-require_relative '../helpers//inclination'
-
 class UsersController < ApplicationController
+
+  include UsersHelper
 
   before_action :load_user, except: %i[index create new]
 
   before_action :authorize_user, except: %i[index create new show]
+
+  helper_method :incline
 
   def index
     @users = User.all
@@ -27,7 +29,7 @@ class UsersController < ApplicationController
     if @user.save
       redirect_to root_url, notice: 'Пользователь зарегистрирован'
     else
-      render 'new'
+      render :edit
     end
   end
 
@@ -40,9 +42,12 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find params[:id]
     @questions = @user.questions.order(created_at: :desc)
     @new_question = @user.questions.build
+    @questions_count = @questions.count
+    @answers_count = @questions.where.not(answer: nil).count
+    @unanswered_count = @questions_count - @answers_count
+
   end
 
   private

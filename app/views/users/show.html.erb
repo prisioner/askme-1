@@ -16,8 +16,19 @@
   </h2>
 
   <h3 class="title-small buffer-both">
-    Пользователю задали <%= @questions.count %> <%= Inclination.incline(@questions.count, 'вопрос', 'вопроса', 'вопросов') %> 
+    Пользователю задали <%= @questions.count %>
+    <%= Inclination.incline(@questions.count, 'вопрос', 'вопроса', 'вопросов') %>
   </h3>
+
+  <% if @user == current_user %>
+    <h4 class="title-small buffer-both">
+      <% answered_questions_count = @questions.reject { |question| question.answer.nil? }.count %>
+      Отвечено: <%= answered_questions_count %>
+      <%= Inclination.incline(answered_questions_count, 'вопрос', 'вопроса', 'вопросов') %>,
+      не отвечено: <%= alone_questions_count = @questions.count - answered_questions_count %>
+      <%= Inclination.incline(alone_questions_count, 'вопрос', 'вопроса', 'вопросов') %>
+    </h4>
+  <% end %>
 
   <div class="user-ask-button container text-center" id='ask-button'>
     <%= link_to "Спроси меня", '', class: 'button button-light', id: 'ask-button' %>

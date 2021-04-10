@@ -16,6 +16,7 @@ class UsersController < ApplicationController
   end
 
   def edit
+
   end
 
   def create
@@ -41,7 +42,6 @@ class UsersController < ApplicationController
   def show
     @user = User.find params[:id]
     @questions = @user.questions.order(created_at: :desc)
-
     @new_question = @user.questions.build
   end
 

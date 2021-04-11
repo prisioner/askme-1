@@ -23,7 +23,7 @@ class UsersController < ApplicationController
     redirect_to root_url, alert: 'Вы уже залогинены' if current_user.present?
 
     @user = User.new(user_params)
-
+    @user.profile_background_color = '#008080'
     if @user.save
       redirect_to root_url, notice: 'Пользователь зарегистрирован'
     else

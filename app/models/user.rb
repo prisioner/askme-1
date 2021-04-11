@@ -25,7 +25,7 @@ class User < ApplicationRecord
   validates_presence_of :password, on: :create
   validates_confirmation_of :password
 
-  before_validation :username_downcase, :email_downcase
+  before_validation :attributes_downcase
   before_save :encrypt_password
 
   def self.authenticate(email, password)
@@ -46,11 +46,8 @@ class User < ApplicationRecord
 
   private
 
-  def username_downcase
+  def attributes_downcase
     username&.downcase!
-  end
-
-  def email_downcase
     email&.downcase!
   end
 

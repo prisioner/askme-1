@@ -1,7 +1,4 @@
 class UsersController < ApplicationController
-
-  include UsersHelper
-
   before_action :load_user, except: %i[index create new]
   before_action :authorize_user, except: %i[index create new show]
   after_action :log_in_user, only: :create

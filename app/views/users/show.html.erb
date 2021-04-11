@@ -1,4 +1,4 @@
-<div class="user-header text-center">
+<div style="padding: 20px 0; color: white; text-align: center; background: <%= @user.profile_background_color %>">
   <h1 class="title-medium">
     <%= @user.name %>
   </h1>
@@ -14,7 +14,6 @@
   <h2 class="title-small buffer-both">
     @<%= @user.username %>
   </h2>
-
 </div>
 
 <div class="user-details">
@@ -56,7 +55,6 @@
     </div>
   </div>
 </div>
-
 
 <div class="column-3-4">
   <div class="user-question buffer-both">

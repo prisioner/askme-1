@@ -5,6 +5,8 @@ class User < ApplicationRecord
   DIGEST = OpenSSL::Digest.new('SHA256')
   # regexp for username validation
   VALID_USERNAME_REGEXP = /\A\w+\z/
+  #regexp for avatar border color
+  VALID_BORDER_COLOR_REGEXP = /\A#[a-f0-9]{6}\z/
 
   attr_accessor :password
 
@@ -16,6 +18,8 @@ class User < ApplicationRecord
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
   # username validation
   validates :username, format: { with: VALID_USERNAME_REGEXP }
+  #border color validation
+  validates :profile_background_color, format: { with: VALID_BORDER_COLOR_REGEXP }
   # username maximum length validation
   validates :username, length: { maximum: 40 }
   validates_presence_of :password, on: :create

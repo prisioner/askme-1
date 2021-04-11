@@ -6,7 +6,7 @@ class User < ApplicationRecord
   # regexp for username validation
   VALID_USERNAME_REGEXP = /\A\w+\z/
   #regexp for avatar border color
-  VALID_BORDER_COLOR_REGEXP = /\A#[a-f0-9]{6}\z/
+  VALID_BORDER_COLOR_REGEXP = /\A#[a-fA-F0-9]{6}\z/
 
   attr_accessor :password
 

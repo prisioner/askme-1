@@ -3,10 +3,7 @@ class UsersController < ApplicationController
   include UsersHelper
 
   before_action :load_user, except: %i[index create new]
-
   before_action :authorize_user, except: %i[index create new show]
-
-  helper_method :incline
 
   def index
     @users = User.all

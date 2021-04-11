@@ -36,7 +36,7 @@
   <div class="container">
 
     <% if flash.any? %>
-      <div class="container-wrapper buffer-both">
+      <div class="content-wrapper buffer-both">
         <% flash.each do |name, message| %>
           <%= content_tag :div, message, class: "flash-#{name}" %>
         <% end %>
